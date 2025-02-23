@@ -6,4 +6,4 @@ Lenguajes:
 
 
 
-*Python
+Python
