@@ -63,14 +63,14 @@ Crea una agenda de contactos por terminal.
 '''
 
 def agenda():
-
     agenda = {}
+
     def insertar_contacto():
-        telefono = input("Ingrese el número de teléfono: ")
+        telefono = input("Ingrese el teléfono del contacto: ")
         if telefono.isdigit() and len(telefono) > 0 and len(telefono) <= 11:
             agenda[nombre] = telefono
         else:
-            print("Error: Tiene que ser menor a 12 números.")
+            print("Error: El teléfono debe ser menor a 12 números.")
 
     while True:
         print("")
@@ -83,16 +83,16 @@ def agenda():
 
         match opcion:
             case "1":
-                nombre = input("Ingrese el nombre del contacto a buscar: ")
+                nombre = input("Ingrese el nombre contacto a buscar: ")
                 if nombre in agenda:
-                    print(f"El número de teléfono de {nombre} es {agenda[nombre]}.")
+                    print(f"El contacto se llama {nombre} y su número de teléfono es {agenda[nombre]}.")
                 else:
                     print(f"El contacto {nombre} no existe.")
             case "2":
                 nombre = input("Ingrese el nombre del nuevo contacto: ")
                 insertar_contacto()
             case "3":
-                nombre = input("Ingrese el nombre del contacto que esta por actualizar: ")
+                nombre = input("Ingrese el nombre del contacto a actualizar: ")
                 if nombre in agenda:
                     insertar_contacto()
                 else:
@@ -107,6 +107,52 @@ def agenda():
                 print("Programa Finalizado.")
                 break
             case _:
-                print("Error: debe ser una opción entre 1 y 5.")
+                print("Opción Inválida. Elige una del 1 al 5.")
+
 
 agenda()
+print("")
+
+'''
+Semana 4:
+
+DIFICULTAD EXTRA (opcional):
+ * Crea un programa que analice dos palabras diferentes y realice comprobaciones
+ * para descubrir si son:
+ * - Palíndromos
+ * - Anagramas
+ * - Isogramas
+'''
+
+def comprobacion(palabra1: str, palabra2: str):
+    
+    #Palíndromo
+    print(f"¿Es {palabra1} un palíndromo?: {palabra1 == palabra1[::-1]}")
+    print(f"¿Es {palabra2} un palíndromo?: {palabra2 == palabra2[::-1]}")
+    print("")
+
+    #Anagrama
+    print(f"¿Es {palabra1} un anagrama?: {sorted(palabra1) == sorted(palabra2)}")
+    print("")
+    #Isograma
+    def isograma(palabra: str) -> bool:
+        palabra_dict = dict()
+        for caracter in palabra_dict:
+            palabra_dict[caracter] = palabra_dict.get(caracter, 0) + 1
+
+        isograma = True
+        valores = palabra_dict.values()
+        isograma_len = valores[0]
+        for palabra_cont in isograma_len:
+            if palabra_cont != isograma_len:
+                isograma = False
+                break
+        return isograma
+    
+    print(f"¿Es {palabra1} un isograma?: {len(palabra1) == len(set(palabra1))}")
+    print(f"¿Es {palabra2} un isograma?: {len(palabra2) == len(set(palabra2))}")
+
+
+comprobacion("radar", "python")
+comprobacion("amor", "roma")
+print("")
