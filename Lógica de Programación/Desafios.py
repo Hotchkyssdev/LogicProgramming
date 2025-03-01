@@ -156,3 +156,42 @@ def comprobacion(palabra1: str, palabra2: str):
 comprobacion("radar", "python")
 comprobacion("amor", "roma")
 print("")
+
+'''
+Semana 5:
+
+DIFICULTAD EXTRA (opcional):
+ * Crea dos programas que reciban dos parámetros (cada uno) definidos como
+ * variables anteriormente.
+ * - Cada programa recibe, en un caso, dos parámetros por valor, y en otro caso, por referencia.
+ *   Estos parámetros los intercambia entre ellos en su interior, los retorna, y su retorno
+ *   se asigna a dos variables diferentes a las originales. A continuación, imprime
+ *   el valor de las variables originales y las nuevas, comprobando que se ha invertido
+ *   su valor en las segundas.
+ *   Comprueba también que se ha conservado el valor original en las primeras.
+'''
+
+def intercambio_valor(valorA: int, valorB: int) -> tuple:
+    temp = valorA
+    valorA = valorB
+    valorB = temp
+    return valorA, valorB
+
+int1 = 10
+int2 = 20
+int3, int4 = intercambio_valor(int1 , int2)
+print(f"{int1}, {int2}")
+print(f"{int3}, {int4}")
+
+def intercambio_referencia(valorA: list, valorB: list) -> tuple:
+    temp = valorA
+    valorA = valorB
+    valorB = temp
+    return valorA, valorB
+
+lista1 = [10, 20]
+lista2 = [30, 40]
+lista3, lista4 = intercambio_referencia(lista1 , lista2)
+print(f"{lista1}, {lista2}")
+print(f"{lista3}, {lista4}")
+print("")
