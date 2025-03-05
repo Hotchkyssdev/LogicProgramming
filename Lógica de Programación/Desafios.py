@@ -195,3 +195,38 @@ lista3, lista4 = intercambio_referencia(lista1 , lista2)
 print(f"{lista1}, {lista2}")
 print(f"{lista3}, {lista4}")
 print("")
+
+'''
+Semana 6:
+
+DIFICULTAD EXTRA (opcional):
+ * Utiliza el concepto de recursividad para:
+ * - Calcular el factorial de un número concreto (la función recibe ese número).
+ * - Calcular el valor de un elemento concreto (según su posición) en la 
+ *   sucesión de Fibonacci (la función recibe la posición).
+'''
+
+def factorial(numero: int) -> int:
+    if numero < 0:
+        print("El número debe ser mayor a 0.")
+        return 0
+    elif numero == 0:
+        return 1
+    else:
+        return numero * factorial(numero - 1)
+
+fact = int(input("Ingrese el número para hacer su factorial: "))
+print(factorial(fact))
+
+def fibonacci(numero: int) -> int:
+    if numero <= 0:
+        print("El número debe ser positivo.")
+    elif numero == 1:
+        return 0
+    elif numero == 2:
+        return 1
+    else:
+        return fibonacci(numero - 1) + fibonacci(numero - 2)
+
+posicion = int(input("Ingrese la posición de la sucesion de fibonacci: "))
+print(fibonacci(posicion))
