@@ -230,6 +230,7 @@ def fibonacci(numero: int) -> int:
 
 posicion = int(input("Ingrese la posición de la sucesion de fibonacci: "))
 print(fibonacci(posicion))
+print("")
 
 '''
 Semana 7:
@@ -283,3 +284,90 @@ def impresora_compartida():
         print(f"Cola de Impresión: {cola}")
 
 impresora_compartida()
+print("")
+
+'''
+Semana 8:
+
+DIFICULTAD EXTRA (Opcional):
+Implementa dos clases que representen las estructuras de Pila y Cola (estudiadas
+ * en el ejercicio número 7 de la ruta de estudio)
+ * - Deben poder inicializarse y disponer de operaciones para añadir, eliminar,
+ *   retornar el número de elementos e imprimir todo su contenido.
+'''
+
+#Pila/Stack (LIFO)
+
+class Pila:
+
+    def __init__(self):
+        self.pila = []
+
+    def push(self, item):
+        self.pila.append(item)
+    
+    def pop(self):
+        if self.contador() == 0:
+            return None
+        return self.pila.pop()
+    
+    def contador(self):
+        return len(self.pila)
+    
+    def print(self):
+        for item in reversed(self.pila):
+            print(item)
+
+mi_pila = Pila()
+mi_pila.push("A")
+mi_pila.push("B")
+mi_pila.push("C")
+print(mi_pila.contador())
+mi_pila.print()
+mi_pila.pop()
+print(mi_pila.contador())
+print(mi_pila.pop())
+print(mi_pila.pop())
+print(mi_pila.pop())
+print(mi_pila.pop())
+print(mi_pila.pop())
+print(mi_pila.contador())
+print("")
+
+#Cola/Queue (FIFO)
+
+class Cola:
+
+    def __init__(self):
+        self.cola = []
+
+    def enqueue(self, item):
+        self.cola.append(item)
+
+    def dequeue(self):
+        if self.contador() == 0:
+            return None
+        return self.cola.pop(0)
+
+    def contador(self):
+        return len(self.cola)
+    
+    def print(self):
+        for item in (self.cola):
+            print(item)
+
+mi_cola = Cola()
+mi_cola.enqueue("A")
+mi_cola.enqueue("B")
+mi_cola.enqueue("C")
+print(mi_cola.contador())
+mi_cola.print()
+mi_cola.dequeue()
+print(mi_cola.contador())
+print(mi_cola.dequeue())
+print(mi_cola.dequeue())
+print(mi_cola.dequeue())
+print(mi_cola.dequeue())
+print(mi_cola.dequeue())
+print(mi_cola.contador())
+print("")
