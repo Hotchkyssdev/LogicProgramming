@@ -371,3 +371,84 @@ print(mi_cola.dequeue())
 print(mi_cola.dequeue())
 print(mi_cola.contador())
 print("")
+
+'''
+Semana 9:
+
+DIFICULTAD EXTRA (opcional):
+Implementa la jerarquía de una empresa de desarrollo formada por Empleados que
+ * pueden ser Gerentes, Gerentes de Proyectos o Programadores.
+ * Cada empleado tiene un identificador y un nombre.
+ * Dependiendo de su labor, tienen propiedades y funciones exclusivas de su
+ * actividad, y almacenan los empleados a su cargo.
+'''
+
+class Empleado:
+
+    def __init__(self, id: int, nombre: str):
+        self.id = id
+        self.nombre = nombre
+        self.empleados = []
+
+    def añadir(self, empleado):
+        self.empleados.append(empleado)
+
+    def imprimir_empleados(self):
+        for empleado in self.empleados:
+            print(empleado.nombre)
+
+class Manager(Empleado):
+
+    def coordinar_proyectos(self):
+        print(f"{self.nombre} está coordinando todos los proyectos de la empresa.")
+
+class ProyectManager(Empleado):
+
+    def __init__(self, id: int, nombre: str, proyecto: str):
+        super().__init__(id, nombre)
+        self.proyecto = proyecto
+
+    def coordinar_proyecto(self):
+        print(f"{self.nombre} está coordinando su proyecto.")
+
+class Programador(Empleado):
+
+    def __init__(self, id: int, nombre: str, lenguaje: str):
+        super().__init__(id, nombre)
+        self.lenguaje = lenguaje
+
+    def codigo(self):
+        print(f"{self.nombre} está programando en {self.lenguaje}.")
+
+    def añadir(self, empleado: Empleado):
+        print(f"Un programador no puede añadir empleados. por lo que {empleado.nombre} no se añadira.")
+
+MiManager = Manager(1, "HotchkyssDev")
+MiProyectManager1 = ProyectManager(2, "Gines", "Proyecto 1")
+MiProyectManager2 = ProyectManager(3, "Galarza", "Proyecto 2")
+MiProgramador1 = Programador(4, "Alfonsi", "PHP")
+MiProgramador2 = Programador(5, "Portillo", "Java")
+MiProgramador3 = Programador(6, "Gnus", "SQL")
+MiProgramador4 = Programador(7, "Romero", "Python")
+
+MiManager.añadir(MiProyectManager1)
+MiManager.añadir(MiProyectManager2)
+
+MiProyectManager1.añadir(MiProgramador1)
+MiProyectManager1.añadir(MiProgramador2)
+MiProyectManager2.añadir(MiProgramador3)
+MiProyectManager2.añadir(MiProgramador4)
+
+MiProgramador1.añadir(MiProgramador2)
+
+MiManager.coordinar_proyectos()
+MiManager.imprimir_empleados()
+MiProyectManager1.coordinar_proyecto()
+MiProyectManager1.imprimir_empleados()
+MiProyectManager2.coordinar_proyecto()
+MiProyectManager2.imprimir_empleados()
+MiProgramador1.imprimir_empleados()
+MiProgramador1.codigo()
+MiProgramador2.codigo()
+MiProgramador3.codigo()
+MiProgramador4.codigo()
