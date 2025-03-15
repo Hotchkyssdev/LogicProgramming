@@ -31,6 +31,7 @@ mi_perro = Perro("Perro")
 imprimir_sonido(mi_perro)
 mi_gato = Gato("Gato")
 imprimir_sonido(mi_gato)
+print("")
 
 '''
 DIFICULTAD EXTRA (opcional):
