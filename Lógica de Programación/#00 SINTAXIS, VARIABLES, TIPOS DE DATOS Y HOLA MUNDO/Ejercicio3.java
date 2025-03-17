@@ -10,12 +10,12 @@ import java.util.Scanner;
 
 public class Ejercicio3 {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese su nombre: ");
-        String nombre = input.nextLine();
+        String nombre = scanner.nextLine();
         System.out.println("Ingrese su edad: ");
-        int edad = input.nextInt();
-        System.out.println("¡Bienvenido/a, " + nombre + "! Tienes " + edad + " años.");
-        input.close();
+        int edad = scanner.nextInt();
+        System.out.println("¡Bienvenido/a " + nombre + " tienes " + edad + " años.");
+        scanner.close();
     }
 }

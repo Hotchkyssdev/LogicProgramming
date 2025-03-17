@@ -16,15 +16,15 @@ public class Ejercicio2 {
         float MiFloat = 3.14F;
         
         float EnteroADecimal = MiEntero;
-        System.out.println("La conversion de entero a decimal es: " + EnteroADecimal);
+        System.out.println("El entero convertido a decimal es: " + EnteroADecimal);
 
         int DecimalAEntero = (int) MiFloat;
-        System.out.println("La conversion de decimal a entero es: " + DecimalAEntero);
+        System.out.println("El decimal convertido a entero es: " + DecimalAEntero);
 
-        // Conversión de ambos valores a cadenas de texto
         String EnteroACadena = Integer.toString(MiEntero);
         String DecimalACadena = Double.toString(MiFloat);
-        System.out.println("El entero convertido a cadena de texto es: " + EnteroACadena);
-        System.out.println("El decimal convertido a cadena de texto es: " + DecimalACadena);
+        System.out.println("El entero convertido a cadena es: " + EnteroACadena);
+        System.out.println("El decimal convertido a cadena es: " + DecimalACadena);
     }
 }
+
