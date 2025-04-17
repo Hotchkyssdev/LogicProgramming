@@ -7,4 +7,3 @@ Lenguajes:
 
 
 - Python
-- Java
