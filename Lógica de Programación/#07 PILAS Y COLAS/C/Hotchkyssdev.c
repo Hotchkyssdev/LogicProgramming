@@ -1496,8 +1496,257 @@ void menu_all(void) {
     printf("Saliendo...\n");
 }
 
+//EXTRA
+#define MAX_CMD 100
+#define MAX_URL_LENGTH 80
+
+typedef struct NodoString {
+    char dato[MAX_URL_LENGTH];
+    struct NodoString *siguiente;
+} NodoString;
+
+typedef struct Pila {
+    NodoString *tope;
+} Pila;
+
+typedef struct Cola {
+    NodoString *frente;
+    NodoString *final;
+} Cola;
+
+void pila_push(Pila *p, const char *cadena) {
+    NodoString *nuevo = (NodoString*)malloc(sizeof(NodoString));
+    if (nuevo == NULL) {
+        printf("Error de memoria en Pila.\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    strncpy(nuevo->dato, cadena, MAX_URL_LENGTH - 1);
+    nuevo->dato[MAX_URL_LENGTH - 1] = '\0'; 
+
+    nuevo->siguiente = p->tope;
+    p->tope = nuevo;
+}
+
+int pila_pop(Pila *p, char *salida) {
+    if (p->tope == NULL) {
+        return 0;
+    }
+    
+    NodoString *temp = p->tope;
+    
+    strncpy(salida, temp->dato, MAX_URL_LENGTH);
+    
+    p->tope = p->tope->siguiente;
+    free(temp);
+    return 1;
+}
+
+void pila_liberar(Pila *p) {
+    NodoString *actual = p->tope;
+    NodoString *siguiente;
+    while (actual != NULL) {
+        siguiente = actual->siguiente;
+        free(actual);
+        actual = siguiente;
+    }
+    p->tope = NULL; //Aseguro que la pila quede vacía
+}
+
+void cola_enqueue(Cola *c, const char *cadena) {
+    NodoString *nuevo = (NodoString*)malloc(sizeof(NodoString));
+    if (nuevo == NULL) {
+        printf("Error de memoria en Cola.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    strncpy(nuevo->dato, cadena, MAX_URL_LENGTH - 1);
+    nuevo->dato[MAX_URL_LENGTH - 1] = '\0';
+    nuevo->siguiente = NULL;
+
+    if (c->final == NULL) {
+        c->frente = nuevo;
+        c->final = nuevo;
+    } else {
+        c->final->siguiente = nuevo;
+        c->final = nuevo;
+    }
+}
+
+int cola_dequeue(Cola *c, char *salida) {
+    if (c->frente == NULL) {
+        return 0;
+    }
+
+    NodoString *temp = c->frente;
+    strncpy(salida, temp->dato, MAX_URL_LENGTH);
+
+    c->frente = c->frente->siguiente;
+    if (c->frente == NULL) {
+        c->final = NULL;
+    }
+    free(temp);
+    return 1;
+}
+
+void cola_imprimir(Cola *c) {
+    NodoString *actual = c->frente;
+    printf("  [Cola]: ");
+    if (actual == NULL) {
+        printf("[VACIA]\n");
+        return;
+    }
+    while (actual != NULL) {
+        printf("[%s] -> ", actual->dato);
+        actual = actual->siguiente;
+    }
+    printf("FINAL\n");
+}
+
+void cola_liberar(Cola *c) {
+    NodoString *actual = c->frente;
+    NodoString *siguiente;
+    while (actual != NULL) {
+        siguiente = actual->siguiente;
+        free(actual);
+        actual = siguiente;
+    }
+    c->frente = NULL; //Aseguro que la cola quede vacía
+    c->final = NULL;
+}
+
+void simular_navegador() {
+    Pila historial_atras = {NULL};
+    Pila historial_adelante = {NULL};
+    char pagina_actual[MAX_URL_LENGTH] = "inicio.com";
+    char comando[MAX_CMD];
+    char pagina_movida[MAX_URL_LENGTH];
+
+    printf("\n--- SIMULACION DE NAVEGADOR WEB (Pilas) ---\n");
+    printf("Comandos: [URL], 'adelante', 'atras', 'menu'\n");
+    printf("Pagina actual: %s\n", pagina_actual);
+
+    while (1) {
+        printf("\n> Accion: ");
+        if (fgets(comando, MAX_CMD, stdin) == NULL) continue;
+        comando[strcspn(comando, "\n")] = '\0';
+
+        if (strcmp(comando, "menu") == 0) {
+            break;
+        }
+
+        if (strcmp(comando, "atras") == 0) {
+            if (pila_pop(&historial_atras, pagina_movida)) {
+                pila_push(&historial_adelante, pagina_actual);
+                strncpy(pagina_actual, pagina_movida, MAX_URL_LENGTH);
+                printf("  << Navegando ATRAS a: %s\n", pagina_actual);
+            } else {
+                printf("  >> Historial ATRAS vacio.\n");
+            }
+        } 
+        else if (strcmp(comando, "adelante") == 0) {
+            if (pila_pop(&historial_adelante, pagina_movida)) {
+                pila_push(&historial_atras, pagina_actual);
+                strncpy(pagina_actual, pagina_movida, MAX_URL_LENGTH);
+                printf("  >> Navegando ADELANTE a: %s\n", pagina_actual);
+            } else {
+                printf("  >> Historial ADELANTE vacio.\n");
+            }
+        } 
+        else { // Nueva URL
+            if (strlen(comando) > 0) {
+                pila_push(&historial_atras, pagina_actual);
+                strncpy(pagina_actual, comando, MAX_URL_LENGTH);
+                
+                //LIBERACION DE MEMORIA IMPORTANTE: Al visitar una nueva URL, el historial adelante debe borrarse.
+                pila_liberar(&historial_adelante); 
+                
+                printf("  >> Nueva URL visitada: %s\n", pagina_actual);
+            }
+        }
+        printf("  [Pagina Actual: %s]\n", pagina_actual);
+    }
+    
+    //LIBERACION FINAL DE MEMORIA DE AMBAS PILAS
+    pila_liberar(&historial_atras);
+    pila_liberar(&historial_adelante);
+    printf("\n>>> Memoria de navegacion liberada.\n");
+}
+
+void simular_impresora() {
+    Cola cola_impresion = {NULL, NULL};
+    char comando[MAX_CMD];
+    char documento_imprimir[MAX_URL_LENGTH];
+
+    printf("\n--- SIMULACION DE IMPRESORA COMPARTIDA (Cola) ---\n");
+    printf("Comandos: [Nombre Documento], 'imprimir', 'menu'\n");
+    cola_imprimir(&cola_impresion);
+
+    while (1) {
+        printf("\n> Accion: ");
+        if (fgets(comando, MAX_CMD, stdin) == NULL) continue;
+        comando[strcspn(comando, "\n")] = '\0';
+
+        if (strcmp(comando, "menu") == 0) {
+            break;
+        }
+
+        if (strcmp(comando, "imprimir") == 0) {
+            if (cola_dequeue(&cola_impresion, documento_imprimir)) {
+                printf("  >> IMPRIMIENDO: %s (Sale el mas antiguo: FIFO)\n", documento_imprimir);
+            } else {
+                printf("  >> Cola de impresion vacia. Nada que imprimir.\n");
+            }
+        } else { // Nuevo documento
+            if (strlen(comando) > 0) {
+                cola_enqueue(&cola_impresion, comando);
+                printf("  >> Documento ENCOLADO: %s\n", comando);
+            }
+        }
+        cola_imprimir(&cola_impresion);
+    }
+    
+    //LIBERACION EN LA MEMORIA DE LA COLA
+    cola_liberar(&cola_impresion);
+    printf("\n>>> Memoria de cola de impresion liberada.\n");
+}
+
 int main(void) {
     menu_all();
+
+    //EXTRA
+    int opcion;
+    printf("\n********************\n");
+    printf("* DIFICULTAD EXTRA *\n");
+    printf("********************\n");
+
+    while (1) {
+        printf("\nMENU DE SIMULACIONES:\n");
+        printf("1. Simular Navegador Web (Pilas)\n");
+        printf("2. Simular Cola de Impresion (Cola)\n");
+        printf("0. Salir\n");
+        printf("Opcion: ");
+
+        if (scanf("%d", &opcion) != 1) {
+            while(getchar() != '\n'); 
+            opcion = -1;
+            continue;
+        }
+        
+        getchar(); 
+
+        if (opcion == 1) {
+            simular_navegador();
+        } else if (opcion == 2) {
+            simular_impresora();
+        } else if (opcion == 0) {
+            printf("Saliendo del programa. Adios!\n");
+            break;
+        } else {
+            printf("Opcion no valida.\n");
+        }
+    }
+
     return 0;
 }
 
