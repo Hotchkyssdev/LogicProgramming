@@ -1,4 +1,4 @@
-# LogicaProgramacion
+# LogicaDeProgramacion
 
 RoadMap Retos de Programación de MoureDev
 Lenguajes:
