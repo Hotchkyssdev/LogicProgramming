@@ -5,6 +5,6 @@ Lenguajes:
 
 
 
-- C
-- Java
-- Python
+- C :computer:
+- Java :coffee:
+- Python :snake:
